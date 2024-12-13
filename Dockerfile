@@ -19,7 +19,7 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on (if needed)
-EXPOSE 3000  # Replace with your app's port if it's different
+EXPOSE 8080  # Replace with your app's port if it's different
 
 # Define the command to start the app
 CMD ["node", "your_app.js"]  # Replace "your_app.js" with your actual entry point file
