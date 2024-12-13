@@ -1,30 +1,25 @@
-# Use an official Python runtime as a base image
-FROM python:3.9-slim
+# Use the official Node.js image as a base
+FROM node:16-slim
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
 # Install system dependencies (including git)
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    pkg-config \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements.txt file into the container
-COPY requirements.txt ./
+# Copy the package.json and package-lock.json files into the container
+COPY package*.json ./
 
-# Upgrade pip to the latest version
-RUN pip install --upgrade pip
-
-# Install Python dependencies (including packages from git repositories)
-RUN sed '/-e/d' requirements.txt | pip install -r /dev/stdin
+# Install Node.js dependencies
+RUN npm install
 
 # Copy the rest of the application code into the container
 COPY . .
 
-# Install any remaining dependencies from requirements.txt (if needed)
-RUN pip install -r requirements.txt
+# Expose the port the app runs on (if needed)
+EXPOSE 3000  # Replace with your app's port if it's different
 
-# Specify the command to run on container startup
-CMD ["python", "your_app.py"]  # Replace "your_app.py" with your actual script or entry point
+# Define the command to start the app
+CMD ["node", "your_app.js"]  # Replace "your_app.js" with your actual entry point file
